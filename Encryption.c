@@ -11,10 +11,12 @@ struct errors {
 void addString(char message[50], char *error);
 int checkKey(char *key, char *error, char *letter);
 int charRepeats(char key, char *letter);
+void encrypt(char *key, char *text);
 
 char alphabet[26];
 char error_message[50];
 char *letter = &alphabet[0];
+
 
 int main(int argc, char *argv[])
 {
@@ -32,18 +34,15 @@ char *error = &error_message[0];
     {
       printf("%s",error);
     } else {
-      printf("yes!");
-    }
+      encrypt(key,text);
+      printf("%s",text);
+        }
   }
-  else if (argc == 2)
-  {
+  else if (argc == 2){
     printf("Please enter your KEY first, and then your TEXT. \n");
-  }
-  else if (argc == 1)
-  {
+  } else if (argc == 1){
     printf("You entered nothing! Try again. \n");
-  } else
-  {
+  } else {
     printf("You entered too many fields. Try again. \n");
   }
 }
@@ -77,17 +76,15 @@ int charRepeats(char key, char *letter) {
   }
   else
   {
-    letter = &alphabet[0];
-
-    while (*letter != 0) {
-
-
+      letter = &alphabet[0];
+      while (*letter != 0) {
       if (key == *letter){
         check = 1;
+        *letter = key;
         break;
+
       } else {
         letter++;
-        *letter = key;
       }
 
     }
@@ -106,3 +103,23 @@ void addString(char message[50], char *error)
     error++;
   }
 }
+
+void encrypt(char *key, char *text){
+  int adder;
+  int index;
+
+  while (*text != 0){
+    if (*text <96){
+      adder = 32;
+      index = *text + adder;
+    } else {
+      adder = 0;
+    }
+    index-=97;
+    key += index;
+    *text = *key;
+    key -= (int) index;
+    text++;
+  }
+
+ }
