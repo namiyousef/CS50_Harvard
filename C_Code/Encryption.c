@@ -1,13 +1,8 @@
 #include <stdio.h>
+/*
+Scope: this function, given a KEY (24 letters long) and a text (without spaces), will encrypt the text based on the key
 
-/* for experimentation
-struct errors {
-  char error1[20];
-  char error2[20];
-  char error3[20];
-  char error4[20];
-};*/
-
+*/
 void addString(char message[50], char *error);
 int checkKey(char *key, char *error, char *letter);
 int charRepeats(char key, char *letter);
@@ -17,15 +12,12 @@ char alphabet[26];
 char error_message[50];
 char *letter = &alphabet[0];
 
-
 int main(int argc, char *argv[])
 {
 
-//struct errors Error; //experiment with this later
 
-
-char *key = argv[1];
-char *text = argv[2];
+char *key = argv[1]; // stores the encryption key
+char *text = argv[2]; // stores the text to be encrypted
 char *error = &error_message[0];
 
   if (argc == 3)
@@ -105,21 +97,31 @@ void addString(char message[50], char *error)
 }
 
 void encrypt(char *key, char *text){
+  /*
+  Function that receives pointers for the encryption key and text to be encrypted, encrypting the latter
+  */
   int adder;
   int index;
 
-  while (*text != 0){
-    if (*text <96){
+  while (*text != '\0'){
+
+    if (*text <96){ // if text is UPPER CASE
       adder = 32;
       index = *text + adder;
     } else {
+      index = *text; // this fixed segementation fault 11
       adder = 0;
     }
-    index-=97;
-    key += index;
-    *text = *key;
-    key -= (int) index;
-    text++;
+
+    if (index > 96) {
+      index-=97;
+      key += index;
+      *text = *key - (adder - 32);
+      key -= (int) index;
+    }
+
+
+    text++; // moves pointer of the text to be encrypted
   }
 
  }
